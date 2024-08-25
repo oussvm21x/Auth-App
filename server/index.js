@@ -2,6 +2,7 @@ import express from 'express';
 import connectDB from './config/db.js';
 import dotenv from 'dotenv';
 import userRoute from './routes/user.route.js';
+import authRoute from './routes/auth.route.js';
 dotenv.config();
 
 const app = express();
@@ -12,6 +13,7 @@ connectDB();
 
 
 app.use("/api/user", userRoute)
+app.use("/api/auth", authRoute)
 
 
 
