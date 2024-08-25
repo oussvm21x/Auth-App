@@ -12,8 +12,9 @@ export const hashingPassword = (plainPassword) => {
     const saltRounds = 10;
     bcrypt.hashSync(plainPassword, saltRounds, (err, hash) => {
         if (err) throw err;
+        return hash;
     });
-    ;
+
 
 }
 
