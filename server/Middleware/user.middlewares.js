@@ -1,4 +1,5 @@
 import { validationResult } from 'express-validator';
+import bcrypt from 'bcrypt';
 export const userVerification = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -6,3 +7,13 @@ export const userVerification = (req, res, next) => {
     }
     next();
 }
+
+export const hashingPassword = (plainPassword) => {
+    const saltRounds = 10;
+    bcrypt.hashSync(plainPassword, saltRounds, (err, hash) => {
+        if (err) throw err;
+    });
+    ;
+
+}
+

@@ -1,7 +1,7 @@
 
-const schema = {
+const userValidator = {
     username: {
-        isEmpty: {
+        notEmpty: {
             errorMessage: 'Username is required',
         },
         isLength: {
@@ -12,8 +12,20 @@ const schema = {
             errorMessage: 'Username should be a string',
         },
     },
+    name: {
+        notEmpty: {
+            errorMessage: 'Name is required',
+        },
+        isLength: {
+            options: { min: 2, max: 25 },
+            errorMessage: 'Name should be at least 2 characters',
+        },
+        isString: {
+            errorMessage: 'Name should be a string',
+        },
+    },
     email: {
-        isEmpty: {
+        notEmpty: {
             errorMessage: 'Email is required',
         },
         isEmail: {
@@ -21,7 +33,7 @@ const schema = {
         },
     },
     password: {
-        isEmpty: {
+        notEmpty: {
             errorMessage: 'Password is required',
         },
         isLength: {
@@ -31,4 +43,4 @@ const schema = {
     },
 }
 
-export default schema;
+export default userValidator;
