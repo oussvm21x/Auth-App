@@ -1,0 +1,22 @@
+#root {
+  margin: 0;
+  padding: 0;
+
+}
+
+
+.section-margine {
+  margin: 2rem 5rem;
+}
+
+.section-padding {
+  margin: 2rem 6rem;
+}
+
+
+
+
+a {
+  color: unset;
+  text-decoration: none;
+}
