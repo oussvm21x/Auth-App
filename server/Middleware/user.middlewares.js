@@ -8,13 +8,13 @@ export const userVerification = (req, res, next) => {
     next();
 }
 
-export const hashingPassword = (plainPassword) => {
-    const saltRounds = 10;
-    bcrypt.hashSync(plainPassword, saltRounds, (err, hash) => {
-        if (err) throw err;
-        return hash;
-    });
 
-
+const saltRounds = 10;
+export const hashPassword = (password) => {
+    const salt = bcrypt.genSaltSync(saltRounds);
+    return bcrypt.hashSync(password, salt)
 }
 
+export const comparePassword = (password, hash) => {
+    return bcrypt.compareSync(password, hash)
+}

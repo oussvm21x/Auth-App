@@ -1,23 +1,24 @@
 import User from "../Models/user.model.js";
-import { hashingPassword } from "../Middleware/user.middlewares.js";
-export const signup = (req, res) => {
-    const hashPass = hashingPassword(req.body.password);
-    console.log(hashPass);
+import { hashPassword } from "../Middleware/user.middlewares.js";
+import { errorMiddleware } from "../Middleware/error.middleware.js"
+export const signup = async (req, res, next) => {
+    const hashPass = hashPassword(req.body.password);
     const { name, username, email, password } = req.body;
     try {
         const user = new User({
             name,
             username,
             email,
-            password
+            password: hashPass
         });
 
-        user.save();
+        const savedUser = await user.save();
+        console.log(savedUser);
         res.status(201).json({ message: "User created successfully" });
 
 
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 
 };
