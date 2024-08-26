@@ -1,0 +1,5 @@
+.header-text {
+    @apply text-sm md:text-base lg:text-xl xl:text-2xl font-bold
+}
+
+.logo {}
