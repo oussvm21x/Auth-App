@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import "./signin.css";
+import { data } from "autoprefixer";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const [data, setData] = useState({});
+  const handleDataChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   // Email validation function
   const validateEmail = (email) => {
@@ -20,7 +30,7 @@ const SignIn = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
@@ -39,7 +49,27 @@ const SignIn = () => {
       setErrors({});
       // Proceed with form submission
       console.log("Form submitted successfully", { email, password });
-      // You can add your form submission logic here, e.g., API call
+      setLoading(true);
+      try {
+        const response = await fetch("/api/auth/signin", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        const result = await response.json();
+        if (result.success === false) {
+          setErrors({ server: result.message });
+        } else {
+          console.log("User logged in successfully  ", result);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setErrors({ server: "Something went wrong. Please try again later." });
+      }
+
+      setLoading(false);
     }
   };
 
@@ -66,32 +96,40 @@ const SignIn = () => {
             name="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              handleDataChange(e);
+            }}
             className="border border-gray-300 p-2 bg-white text-black"
           />
           {errors.email && (
             <span className="text-red-500 text-sm">{errors.email}</span>
           )}
-
           <input
             type="password"
             id="password"
             name="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              handleDataChange(e);
+            }}
             className="border border-gray-300 p-2 bg-white text-black"
           />
           {errors.password && (
             <span className="text-red-500 text-sm">{errors.password}</span>
           )}
-
           <button
             type="submit"
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            className={`text-white p-2 rounded ${
+              loading ? "bg-red-600" : "bg-blue-500 hover:bg-blue-600 "
+            }`}
+            disabled={loading}
           >
-            Sign In
+            {loading ? "Loading..." : "Sign In"}
           </button>
+          ;
           <LineWithText text="OR" />
           <div className="flex justify-between flex-col gap-5 sm:flex-row sm:gap-5">
             <button
@@ -120,6 +158,9 @@ const SignIn = () => {
             Sign Up
           </a>
         </p>
+        {errors.server && (
+          <div className="text-red-500 text-sm">{errors.server}</div>
+        )}
       </div>
     </section>
   );
