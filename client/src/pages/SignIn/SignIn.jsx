@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import "./signin.css";
-import { data } from "autoprefixer";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../../redux/user/userSlice";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
-
   const [data, setData] = useState({});
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state);
   const handleDataChange = (e) => {
     setData({
       ...data,
@@ -17,16 +26,22 @@ const SignIn = () => {
 
   // Email validation function
   const validateEmail = (email) => {
+    if (!email) {
+      return "Email is required.";
+    }
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+    if (!re.test(email)) {
+      return "Invalid email format.";
+    }
+    return null; // No errors
   };
 
   // Password validation function
   const validatePassword = (password) => {
-    const minLength = 8;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    return password.length >= minLength && hasUpperCase && hasLowerCase;
+    if (!password) {
+      return "Password is required.";
+    }
+    return null; // No errors
   };
 
   // Handle form submission
@@ -34,13 +49,14 @@ const SignIn = () => {
     e.preventDefault();
     const newErrors = {};
 
-    if (!validateEmail(email)) {
-      newErrors.email = "Invalid email format.";
+    const emailError = validateEmail(email);
+    if (emailError) {
+      newErrors.email = emailError;
     }
 
-    if (!validatePassword(password)) {
-      newErrors.password =
-        "Password must be at least 8 characters long and include both uppercase and lowercase letters.";
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      newErrors.password = passwordError;
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -49,7 +65,7 @@ const SignIn = () => {
       setErrors({});
       // Proceed with form submission
       console.log("Form submitted successfully", { email, password });
-      setLoading(true);
+      dispatch(signInStart());
       try {
         const response = await fetch("/api/auth/signin", {
           method: "POST",
@@ -60,16 +76,19 @@ const SignIn = () => {
         });
         const result = await response.json();
         if (result.success === false) {
-          setErrors({ server: result.message });
+          dispatch(signInFailure(result.message));
+          console.error("Error:", result.message);
+          return;
         } else {
           console.log("User logged in successfully  ", result);
+          dispatch(signInSuccess(result));
+          navigate("/profile");
+          return;
         }
       } catch (error) {
+        dispatch(signInFailure(error));
         console.error("Error:", error);
-        setErrors({ server: "Something went wrong. Please try again later." });
       }
-
-      setLoading(false);
     }
   };
 
@@ -129,7 +148,7 @@ const SignIn = () => {
           >
             {loading ? "Loading..." : "Sign In"}
           </button>
-          ;
+
           <LineWithText text="OR" />
           <div className="flex justify-between flex-col gap-5 sm:flex-row sm:gap-5">
             <button
@@ -158,9 +177,7 @@ const SignIn = () => {
             Sign Up
           </a>
         </p>
-        {errors.server && (
-          <div className="text-red-500 text-sm">{errors.server}</div>
-        )}
+        {error && <div className="text-red-500 text-sm">{error}</div>}
       </div>
     </section>
   );

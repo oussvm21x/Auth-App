@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./signup.css";
-
+import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,7 +10,7 @@ const SignUp = () => {
   const [data, setData] = useState({});
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
-
+  const navigate = useNavigate();
   const handleDataChange = (e) => {
     setData({
       ...data,
@@ -115,7 +115,8 @@ const SignUp = () => {
         if (result.success === false) {
           setErrors({ server: result.message });
         } else {
-          console.log("User created successfully hhhhhhhhh ", result);
+          console.log("User created successfully ", result);
+          navigate("/profile");
         }
       } catch (error) {
         console.error("Error:", error);

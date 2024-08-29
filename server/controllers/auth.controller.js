@@ -29,10 +29,10 @@ export const signin = async (req, res, next) => {
     const { email, password } = req.body
     try {
         const findUser = await User.findOne({ email })
-        if (!findUser) return res.status(404).send({ message: " no user found" })
+        if (!findUser) return res.status(404).send({ message: " no user found", success: false })
         const validatePassword = comparePassword(password, findUser.password)
         const { password: hashed, ...validUser } = findUser._doc
-        if (!validatePassword) return res.status(401).send({ message: "bad authentication , wrong password" })
+        if (!validatePassword) return res.status(401).send({ message: "bad authentication , wrong password", success: false })
         const token = jsonwebtoken.sign({ id: findUser._id }, process.env.JWT_SECRETE)
         res.cookie('token', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }).status(200).send(validUser)
     } catch (error) {
