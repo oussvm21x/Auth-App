@@ -4,12 +4,16 @@ import dotenv from 'dotenv';
 import userRoute from './routes/user.route.js';
 import authRoute from './routes/auth.route.js';
 import bodyParser from 'body-parser'
+import passport from 'passport';
+
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
 connectDB();
+
+app.use(passport.initialize());
 
 
 app.use("/api/user", userRoute)
