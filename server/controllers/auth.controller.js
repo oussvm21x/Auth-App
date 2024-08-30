@@ -40,4 +40,70 @@ export const signin = async (req, res, next) => {
     }
 
 
-} 
+}
+
+export const google = async (req, res, next) => {
+    const { name, email, picture } = req.body
+    try {
+        const findUser = await User.findOne({ email })
+        if (findUser) {
+            console.log("user found")
+            const token = jsonwebtoken.sign({ id: findUser._id }, process.env.JWT_SECRETE)
+            res.cookie('token', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }).status(200).send(findUser)
+
+        }
+        else {
+            const user = new User({
+                name: name,
+                email: email,
+                picture: picture,
+                username: email.split('@')[0] + Math.floor(Math.random() * 1000000).toString(),
+                password: hashPassword(Math.random().toString(36).slice(-8))
+
+            });
+            const savedUser = await user.save();
+            const token = jsonwebtoken.sign({ id: savedUser._id }, process.env.JWT_SECRETE)
+            res.cookie('token', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }).status(200).send(savedUser)
+        }
+
+
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+export const github = async (req, res, next) => {
+    console.log("github")
+    const { name, email, picture } = req.body
+    try {
+        const findUser = await User.findOne({ email })
+        if (findUser) {
+            console.log("user found")
+            const token = jsonwebtoken.sign({ id: findUser._id }, process.env.JWT_SECRETE)
+            res.cookie('token', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }).status(200).send(findUser)
+
+        }
+        else {
+            const user = new User({
+                name: name,
+                email: email,
+                picture: picture,
+                username: email.split('@')[0] + Math.floor(Math.random() * 1000000).toString(),
+                password: hashPassword(Math.random().toString(36).slice(-8))
+
+            });
+            const savedUser = await user.save();
+            const token = jsonwebtoken.sign({ id: savedUser._id }, process.env.JWT_SECRETE)
+            res.cookie('token', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }).status(200).send(savedUser)
+        }
+
+
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}

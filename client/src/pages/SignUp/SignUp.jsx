@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./signup.css";
 import { useNavigate } from "react-router-dom";
+import GoogleOauth from "../../components/Oauth/googleOauth";
+import GithubOauth from "../../components/Oauth/githubOauth";
+import FacebookOauth from "../../components/Oauth/facebookOauth";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -140,32 +143,9 @@ const SignUp = () => {
   const OauthButtonLinks = () => {
     return (
       <div className="flex justify-between flex-col gap-5 sm:flex-row sm:gap-5">
-        <Link to="/google" className="w-full">
-          <button
-            type="button"
-            className="bg-red-900 text-white p-2 rounded hover:bg-red-950 w-full"
-          >
-            Google
-          </button>
-        </Link>
-
-        <Link to="/github" className="w-full">
-          <button
-            type="button"
-            className="bg-neutral-600 text-white p-2 rounded hover:bg-neutral-800 w-full"
-          >
-            GitHub
-          </button>
-        </Link>
-
-        <Link to="/facebook" className="w-full">
-          <button
-            type="button"
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 w-full"
-          >
-            Facebook
-          </button>
-        </Link>
+        <GoogleOauth />
+        <GithubOauth />
+        <FacebookOauth />
       </div>
     );
   };

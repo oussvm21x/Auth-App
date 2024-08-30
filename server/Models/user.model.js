@@ -22,6 +22,10 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.String,
         required: true,
     },
+    picture: {
+        type: mongoose.Schema.Types.String,
+        default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG_lrp2KdgpHFWjZarOfOncIDEBmALnfKf-w&s",
+    },
 },
     { timestamps: true });
 

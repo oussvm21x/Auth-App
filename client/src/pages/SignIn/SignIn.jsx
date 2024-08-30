@@ -3,6 +3,9 @@ import "./signin.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import GoogleOauth from "../../components/Oauth/googleOauth";
+import GithubOauth from "../../components/Oauth/githubOauth";
+import FacebookOauth from "../../components/Oauth/facebookOauth";
 import {
   signInStart,
   signInSuccess,
@@ -102,6 +105,16 @@ const SignIn = () => {
     );
   };
 
+  const OauthButtonLinks = () => {
+    return (
+      <div className="flex justify-between flex-col gap-5 sm:flex-row sm:gap-5">
+        <GoogleOauth />
+        <GithubOauth />
+        <FacebookOauth />
+      </div>
+    );
+  };
+
   return (
     <section className="flex justify-center flex-col items-center  rounded-lg  xl:mt-2 2xl:mt-14">
       <div className="sm:w-[500px] w-[350px] p-6">
@@ -150,26 +163,7 @@ const SignIn = () => {
           </button>
 
           <LineWithText text="OR" />
-          <div className="flex justify-between flex-col gap-5 sm:flex-row sm:gap-5">
-            <button
-              type="submit"
-              className="bg-red-900 text-white p-2 rounded hover:bg-red-950 w-full"
-            >
-              google
-            </button>
-            <button
-              type="submit"
-              className="bg-neutral-600 text-white p-2 rounded hover:bg-neutral-800 w-full "
-            >
-              github
-            </button>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 w-full "
-            >
-              facebook
-            </button>
-          </div>
+          <OauthButtonLinks />
         </form>
         <p className="mt-6 text-white">
           Want to joint ?{" "}
