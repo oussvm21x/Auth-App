@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { IoMenu, IoClose } from "react-icons/io5";
 import "./navbar.css";
+import { useSelector } from "react-redux";
 const Navbar = () => {
+  const { currentUser } = useSelector((state) => state);
   const MenuItem = () => {
     return (
       <ul className=" md:flex gap-5 items-center">
@@ -53,9 +55,15 @@ const Navbar = () => {
         <div className="hidden md:flex ">
           <MenuItem />
         </div>
-        <div className="hidden xxs:flex ">
-          <Buttons />
-        </div>
+        {currentUser ? (
+          <Link to="/profile" className="w-10 rounded-full hidden xxs:flex ">
+            <img className="rounded-full" src={currentUser.picture} alt="" />
+          </Link>
+        ) : (
+          <div className="hidden xxs:flex ">
+            <Buttons />
+          </div>
+        )}
       </div>
 
       <div className="md:hidden">
@@ -68,8 +76,18 @@ const Navbar = () => {
         {toggleMenu && (
           <div className="flex flex-col items-center justify-center text-center p-4 rounded-md absolute bg-color2 right-2 top-16 scale-up-top">
             <MenuItem />
-            <div className="xxs:hidden">
-              <Buttons />
+            <div className="xxs:hidden pt-3">
+              {currentUser ? (
+                <Link to="/profile">
+                  <img
+                    className="rounded-full w-10"
+                    src={currentUser.picture}
+                    alt=""
+                  />
+                </Link>
+              ) : (
+                <Buttons />
+              )}
             </div>
           </div>
         )}
