@@ -6,8 +6,9 @@ import { app } from "../../firbase.js";
 import { getStorage } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
-
+import { useSignOut } from "../../components/SignOut.jsx";
 const profile = () => {
+  const signOut = useSignOut();
   const fileRef = useRef();
   const [file, setFile] = useState(null);
   const [imageErr, setImageErr] = useState(null);
@@ -60,6 +61,8 @@ const profile = () => {
     );
   };
 
+  const handleUpdate = () => {};
+
   if (!currentUser) {
     navigate("/signin");
     return null; // To prevent rendering the rest of the component
@@ -67,6 +70,12 @@ const profile = () => {
 
   return (
     <div className="">
+      <button
+        className="bg-red-600 p-2 text-white rounded-md absolute hidden md:block right-10"
+        onClick={signOut}
+      >
+        sing out
+      </button>
       <section className="flex justify-center flex-col items-center rounded-lg mt-4 xxl:mt-6">
         <div className="sm:w-[500px] xl:[600px] xs:w-[450px]  w-[350px] pt-6 p-4 lg:p-6 ">
           <span className="rounded-full items-center flex justify-center ">
@@ -78,10 +87,10 @@ const profile = () => {
               }}
               className="hidden"
             />
-            <div className="flex flex-col justify-center ">
+            <div className="flex flex-col justify-center w-48 h-48  overflow-hidden rounded-full">
               <img
-                className="rounded-full w-48"
-                src={currentUser.picture}
+                className="rounded-full w-full object-cover"
+                src={data.picture || currentUser.picture}
                 alt=""
                 onClick={() => fileRef.current.click()}
               />
@@ -129,6 +138,7 @@ const profile = () => {
             </div>
             <button
               className={`text-white p-2 rounded bg-blue-500 hover:bg-blue-600 mt-4`}
+              onClick={handleUpdate}
             >
               Update informations
             </button>

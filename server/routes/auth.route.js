@@ -12,6 +12,10 @@ router.post('/signup', checkSchema(userValidator), userVerification, signup, err
 router.post('/signin', signin)
 router.post('/google', google)
 router.post('/github', github)
+router.get('/signout', (req, res) => {
+    res.clearCookie('token');
+    res.status(200).send({ message: "signout successfully" })
+})
 
 
 

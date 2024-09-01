@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRoute from './routes/user.route.js';
 import authRoute from './routes/auth.route.js';
 import passport from 'passport';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -12,10 +13,10 @@ app.use(express.json());
 
 connectDB();
 
-app.use(passport.initialize());
+app.use(cookieParser());
 
 
-app.use("/api/user", userRoute)
+app.use("/api/users", userRoute)
 app.use("/api/auth", authRoute)
 
 

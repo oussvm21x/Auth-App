@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { error } from "console";
+import { updateProfile } from "firebase/auth";
 
 
 const initialState = {
@@ -37,6 +39,24 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        signOut: (state) => {
+            state.currentUser = null;
+            state.loading = false;
+            state.error = null;
+        },
+        updateProfileStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        updateProfileSuccess: (state, action) => {
+            state.loading = false;
+            state.currentUser = action.payload;
+            state.error = null;
+        },
+        updateProfileFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     },
 });
 
@@ -47,5 +67,6 @@ export const {
     signUpStart,
     signUpSuccess,
     signUpFailure,
+    signOut,
 } = userSlice.actions;
 export default userSlice.reducer;

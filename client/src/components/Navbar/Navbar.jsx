@@ -4,7 +4,11 @@ import { useState } from "react";
 import { IoMenu, IoClose } from "react-icons/io5";
 import "./navbar.css";
 import { useSelector } from "react-redux";
+import { useSignOut } from "../SignOut";
+
 const Navbar = () => {
+  const signOut = useSignOut();
+
   const { currentUser } = useSelector((state) => state);
   const MenuItem = () => {
     return (
@@ -76,6 +80,12 @@ const Navbar = () => {
         {toggleMenu && (
           <div className="flex flex-col items-center justify-center text-center p-4 rounded-md absolute bg-color2 right-2 top-16 scale-up-top">
             <MenuItem />
+            <button
+              className="bg-red-600 p-2 text-white rounded-md absolute hidden md:block right-10"
+              onClick={signOut}
+            >
+              sing out
+            </button>
             <div className="xxs:hidden pt-3">
               {currentUser ? (
                 <Link to="/profile">
