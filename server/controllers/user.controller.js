@@ -19,7 +19,7 @@ export const updateUser = async (req, res, next) => {
                     username: req.body.username,
                     email: req.body.email,
                     password: req.body.password,
-                    profilePicture: req.body.profilePicture,
+                    picture: req.body.picture,
                     name: req.body.name,
                 }
             },
@@ -33,4 +33,18 @@ export const updateUser = async (req, res, next) => {
 
     }
 
+}
+
+
+export const deleteUser = async (req, res, next) => {
+    if (req.user.id !== req.params.id) {
+        return res.status(401).json({ message: "Hello Unauthorized" });
+    }
+    try {
+        await User.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: "User has been deleted..." });
+    }
+    catch (error) {
+        return res.status(401).json({ error: error.message });
+    }
 }

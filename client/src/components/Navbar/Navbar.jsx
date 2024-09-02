@@ -60,8 +60,15 @@ const Navbar = () => {
           <MenuItem />
         </div>
         {currentUser ? (
-          <Link to="/profile" className="w-10 rounded-full hidden xxs:flex ">
-            <img className="rounded-full" src={currentUser.picture} alt="" />
+          <Link
+            to="/profile"
+            className="w-10 h-10 rounded-full hidden xxs:flex "
+          >
+            <img
+              className="rounded-full w-full object-cover"
+              src={currentUser.picture}
+              alt=""
+            />
           </Link>
         ) : (
           <div className="hidden xxs:flex ">

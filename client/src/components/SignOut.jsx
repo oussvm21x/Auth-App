@@ -10,11 +10,9 @@ export const useSignOut = () => {
   const signOut = async () => {
     try {
       // Assuming you're using fetch or axios to make a GET request for sign out
-      await fetch("/api/auth/logout");
-
+      await fetch("/api/auth/signout");
       // Dispatch the logout action
       dispatch(logout());
-
       // Redirect to the home page or sign-in page
       navigate("/signin");
     } catch (error) {

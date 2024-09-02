@@ -5,15 +5,24 @@ import { useNavigate } from "react-router-dom";
 import GoogleOauth from "../../components/Oauth/googleOauth";
 import GithubOauth from "../../components/Oauth/githubOauth";
 import FacebookOauth from "../../components/Oauth/facebookOauth";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {
+  signUpFailure,
+  signUpStart,
+  signUpSuccess,
+  setValues,
+} from "../../redux/user/userSlice";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
+  const { loading, error } = useSelector((state) => state);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleDataChange = (e) => {
     setData({
       ...data,
@@ -105,7 +114,7 @@ const SignUp = () => {
       setErrors(newErrors);
     } else {
       setErrors({});
-      setLoading(true);
+      dispatch(signUpStart());
       try {
         const response = await fetch("/api/auth/signup", {
           method: "POST",
@@ -116,17 +125,16 @@ const SignUp = () => {
         });
         const result = await response.json();
         if (result.success === false) {
-          setErrors({ server: result.message });
+          dispatch(signUpFailure(result.message));
         } else {
           console.log("User created successfully ", result);
+          dispatch(signUpSuccess(result));
           navigate("/profile");
         }
       } catch (error) {
         console.error("Error:", error);
-        setErrors({ server: "Something went wrong. Please try again later." });
+        dispatch(signUpFailure(error));
       }
-
-      setLoading(false);
     }
   };
 
@@ -238,9 +246,7 @@ const SignUp = () => {
             Sign in
           </a>
         </p>
-        {errors.server && (
-          <div className="text-red-500 text-sm">{errors.server}</div>
-        )}
+        {error && <div className="text-red-500 text-sm">{error}</div>}
       </div>
     </section>
   );

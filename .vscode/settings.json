@@ -3,6 +3,7 @@
     "persistor",
     "reduxjs",
     "signin",
+    "signout",
     "signup"
   ]
 }

@@ -10,16 +10,17 @@ import {
   signInStart,
   signInSuccess,
   signInFailure,
+  setValues,
 } from "../../redux/user/userSlice";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [data, setData] = useState({});
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state);
+
   const handleDataChange = (e) => {
     setData({
       ...data,
@@ -172,6 +173,7 @@ const SignIn = () => {
           </a>
         </p>
         {error && <div className="text-red-500 text-sm">{error}</div>}
+        {console.log("error", error)}
       </div>
     </section>
   );

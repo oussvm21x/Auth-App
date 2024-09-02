@@ -9,6 +9,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import NotFound from "./pages/NotFound/NotFound";
 import Profile from "./pages/Profile/Profile";
 import Navbar from "./components/Navbar/Navbar";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -20,7 +21,9 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
