@@ -7,7 +7,7 @@ import About from "./pages/About/About";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
 import NotFound from "./pages/NotFound/NotFound";
-import Profile from "./pages/Profile/Profile";
+import Profile from "./pages/Profilepage/Profilepage";
 import Navbar from "./components/Navbar/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
 import Contact from "./pages/Contact";

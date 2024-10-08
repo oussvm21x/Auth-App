@@ -15,8 +15,8 @@ import {
   deleteProfileFailure,
   deleteProfileStart,
   deleteProfileSuccess,
-} from "../../redux/user/userSlice";
-const profile = () => {
+} from "../../redux/user/userSlice.js";
+const Profilepage = () => {
   const signOut = useSignOut();
   const fileRef = useRef();
   const [file, setFile] = useState(null);
@@ -247,4 +247,4 @@ const profile = () => {
   );
 };
 
-export default profile;
+export default Profilepage;
